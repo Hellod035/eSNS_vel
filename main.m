@@ -14,7 +14,7 @@ qlow=[-2.7437, -1.7837, -2.9007, -3.0421, -2.8065, 0.5445, -3.0159]';
 qmax=[ 2.7437,  1.7837,  2.9007, -0.1518,  2.8065, 4.5169,  3.0159]';
 
 % 采样时间设置
-delta_t = 0.001;duration = 10;steps= duration/delta_t;
+delta_t = 0.01;duration = 10;steps= duration/delta_t;
 
 % 轨迹生成
 start_point_t2=[0.55,0.13,0.6];
