@@ -8,19 +8,11 @@ robot = importrobot('panda.urdf',"DataFormat" , "column");
 % 跟踪目标
 target='panda_grasptarget';
 
-% 平滑因子
-sm=0.0;
-
 % 关节物理极限
-dqmax=[0.2,0.2,0.2,0.2,0.2,0.2,0.2]';dqlow=-dqmax;
+dqmax=[0.25,0.25,0.25,0.25,0.25,0.25,0.25]';dqlow=-dqmax;
 % dqmax=[2.62,2.62,2.62,2.62,5.26,4.18,5.26]';dqlow=-dqmax;
 qlow=[-2.7437, -1.7837, -2.9007, -3.0421, -2.8065, 0.5445, -3.0159]';
 qmax=[ 2.7437,  1.7837,  2.9007, -0.1518,  2.8065, 4.5169,  3.0159]';
-
-% 关节笛卡尔极限
-cartesian_bound_target="panda_link5";
-xbound=[[-10;0;-10],[10;10;0.85]];
-dxbound=[[-10;-10;-10],[10;10;10]];
 
 % 采样时间设置
 delta_t = 0.01;duration = 10;steps= duration/delta_t;
@@ -45,8 +37,8 @@ for s=(1:steps-1)
 
     J=geometricJacobian(robot,[qSolutions(:,s);0;0], target);
     J=J(4:6,1:7);
-    dqMin=max(dqlow,20*(qlow-qSolutions(:,s)));
-    dqMax=min(dqmax,20*(qmax-qSolutions(:,s)));
+    dqMin=max(dqlow,20*(qlow-qSolutions(:,s))/delta_t);
+    dqMax=min(dqmax,(qmax-qSolutions(:,s))/delta_t);
 
     % 生成速度期望
     v=td(:,s)+100*cartesian_error(robot,qSolutions(:,s),trajectory(:,s),target);
@@ -55,8 +47,6 @@ for s=(1:steps-1)
     else
         J_dot=(J-J_prev)/delta_t;
     end
-    
-    [dxLim,dxMax,dxMin] = cartesian_bound(xbound,dxbound,cartesian_bound_target,robot,qSolutions(:,s));
 
     position_error=cartesian_error(robot,qSolutions(:,s),trajectory(:,s),target);
 
@@ -72,20 +62,20 @@ for s=(1:steps-1)
     bprime{2,1}=td(2,s)+100*position_error(2,:);
     bprime{3,1}=td(3,s)+100*position_error(3,:);
     C={};
-    C{1,1}=[A_LIM;dxLim];
+    C{1,1}=A_LIM;
     C{2,1}=zeros(1,7);
     C{3,1}=zeros(1,7);
     dmax={};
-    dmax{1,1}=[dqMax;dxMax];
+    dmax{1,1}=dqMax;
     dmax{2,1}=0;
     dmax{3,1}=0;
     dmin={};
-    dmin{1,1}=[dqMin;dxMin];
+    dmin{1,1}=dqMin;
     dmin{2,1}=0;
     dmin{3,1}=0;
 
     %求解
-    [sdata(:,s),dq] = esns_qp(A,bprime,C,dmax,dmin,ur,sm);
+    [sdata(:,s),dq] = esns_qp(A,bprime,C,dmax,dmin,ur);
 
     dqSolutions(:,s) = dq;
     qSolutions(:,s+1) = qSolutions(:,s) + dqSolutions(:,s) * delta_t;
