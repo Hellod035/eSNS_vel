@@ -1,4 +1,4 @@
-function [sData,ddq] = esns_qp(A,bprime,C,dmax,dmin,ur,)
+function [sData,ddq] = esns_qp(A,bprime,C,dmax,dmin,ur,sm)
 
 nTask=size(A,1);
 nJnt=size(A{1},2);
@@ -29,11 +29,11 @@ for iTask=1:nTask
     if (exitCode == 1)
         si = 1+sm-zSoln(end);
         si=si-sm;
-        Lambdai=[[A{iTask},zeros(size(bprime{iTask}))];[A_prev,zeros(size(A_prev,1),1)]];
+        Lambdai=[[A{iTask},si*bprime{iTask}];[A_prev,zeros(size(A_prev,1),1)]];
         Betai=[si*bprime{iTask}-A{iTask}*ur{iTask};bprime_prev-A_prev*ur{iTask}];
         [zSoln, ~, ~]=quadprog(Ohm,[],Gammai,Deltai,Lambdai,Betai,[],[],[],options);
         ddqi = zSoln(1:nJnt)+ur{iTask};
-
+        si = 1+sm-zSoln(end);
         if iTask==1
             A_prev=A{iTask};
             bprime_prev=si*bprime{iTask};

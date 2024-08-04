@@ -29,27 +29,27 @@ for iTask=1:nTask
     if (exitCode == 1)
         si = 1+sm-zSoln(end);
         si=si-sm;
-        Lambdai=[[A{iTask},zeros(size(bprime{iTask}))];[A_prev,zeros(size(A_prev,1),1)]];
+        Lambdai=[[A{iTask},si*bprime{iTask}];[A_prev,zeros(size(A_prev,1),1)]];
         Betai=[si*bprime{iTask}-A{iTask}*ur{iTask};bprime_prev-A_prev*ur{iTask}];
         [zSoln, ~, ~]=quadprog(Ohm,[],Gammai,Deltai,Lambdai,Betai,[],[],[],options);
-        ddqi = zSoln(1:nJnt)+ur{iTask};
+        dqi = zSoln(1:nJnt)+ur{iTask};
 
         if iTask==1
             A_prev=A{iTask};
-            bprime_prev=si*bprime{iTask};
+            bprime_prev=A{iTask}*dqi;
         else
             A_prev=[A_prev;A{iTask}];
-            bprime_prev=[bprime_prev;si*bprime{iTask}];
+            bprime_prev=[bprime_prev;A{iTask}*dqi];
         end
     elseif (exitCode < 1 && iTask > 1)
 
 
         si = 0;
-        ddqi =  ddqData{iTask-1};
+        dqi =  ddqData{iTask-1};
 
     else
 
-        ddqi = zeros(nJnt,1);
+        dqi = zeros(nJnt,1);
         si = 0;
         A_prev=zeros(size(A{iTask}));
         bprime_prev=zeros(size(bprime{iTask}));
@@ -58,8 +58,8 @@ for iTask=1:nTask
 
 
     sData(iTask) = si;
-    ddqData{iTask} = ddqi;
+    ddqData{iTask} = dqi;
 
 
 end
-ddq = ddqi;
+ddq = dqi;
