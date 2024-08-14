@@ -1,7 +1,7 @@
 # eSNS-vel Library
 `Version 1.0.0`
 
-The QP implement of extended Saturation in the Null-Space (SNS) Inverse-Kinematics (IK).
+The QP implement of extended Saturation in the Null-Space (eSNS) Inverse-Kinematics (IK).
 
 ## References:
 
