@@ -15,6 +15,7 @@ The primary reference is:
 ## Use this repository
 Run *main* to get the simulation results, and run *video* to watch the simulation demonstration.
 
-
+## Contact
+Contact 24b908020@stu.hit.edu.cn for further imformation
 
 
