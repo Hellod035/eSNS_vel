@@ -12,6 +12,9 @@ The primary reference is:
 ([IEEE](https://ieeexplore.ieee.org/document/7097068/)).
 
 
+# Use this repository
+Run Run *main* to get the simulation results, and run *video* to watch the simulation demonstration.
+
 
 
 
