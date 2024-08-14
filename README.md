@@ -6,12 +6,11 @@ The QP implement of extended Saturation in the Null-Space (eSNS) Inverse-Kinemat
 ## References:
 
 The primary reference is:
-
+- *A General Framework for Hierarchical Redundancy Resolution Under Arbitrary Constraints*
+([IEEE](https://ieeexplore.ieee.org/abstract/document/10008952)).
 - *Control of Redundant Robots Under Hard Joint Constraint: Saturation in the Null Space*
 ([IEEE](https://ieeexplore.ieee.org/document/7097068/)).
 
-- *A General Framework for Hierarchical Redundancy Resolution Under Arbitrary Constraints*
-([IEEE](https://ieeexplore.ieee.org/abstract/document/10008952)).
 
 
 
