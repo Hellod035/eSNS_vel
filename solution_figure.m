@@ -40,12 +40,9 @@ for i = 1:size(qSolutions,2)
     dx_target(:,i)=J*dqSolutions(:,i);
 end
 
-figure('Name', '笛卡尔位置');
+%次要任务
+figure('Name', '次要任务笛卡尔位置');
 plot(x_target')
-% figure('Name', '笛卡尔速度');
-% plot(dx_target')
-
-
 
 
 

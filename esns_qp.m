@@ -2,14 +2,14 @@ function [sData,ddq] = esns_qp(A,bprime,C,dmax,dmin,ur,sm)
 
 nTask=size(A,1);
 nJnt=size(A{1},2);
-alpha = 1e-3;
+alpha = 1e-5;
 A_prev=zeros(1,nJnt);
 bprime_prev=0;
 
 Ci=[];
 dmaxi=[];
 dmini=[];
-Ohm=blkdiag(alpha * eye(nJnt), 1.0 / alpha);
+Ohm=blkdiag(alpha * eye(nJnt), 1.0);
 for iTask=1:nTask
 
     Lambdai=[[A{iTask},bprime{iTask}];[A_prev,zeros(size(A_prev,1),1)]];
@@ -32,6 +32,7 @@ for iTask=1:nTask
         Lambdai=[[A{iTask},si*bprime{iTask}];[A_prev,zeros(size(A_prev,1),1)]];
         Betai=[si*bprime{iTask}-A{iTask}*ur{iTask};bprime_prev-A_prev*ur{iTask}];
         [zSoln, ~, ~]=quadprog(Ohm,[],Gammai,Deltai,Lambdai,Betai,[],[],[],options);
+
         dqi = zSoln(1:nJnt)+ur{iTask};
 
         if iTask==1
@@ -45,7 +46,7 @@ for iTask=1:nTask
 
 
         si = 0;
-        dqi =  ddqData{iTask-1};
+        dqi =  dqData{iTask-1};
 
     else
 
@@ -58,7 +59,7 @@ for iTask=1:nTask
 
 
     sData(iTask) = si;
-    ddqData{iTask} = dqi;
+    dqData{iTask} = dqi;
 
 
 end
