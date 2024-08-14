@@ -13,7 +13,7 @@ The primary reference is:
 
 
 ## Use this repository
-Run Run *main* to get the simulation results, and run *video* to watch the simulation demonstration.
+Run *main* to get the simulation results, and run *video* to watch the simulation demonstration.
 
 
 
